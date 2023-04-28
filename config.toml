@@ -1,0 +1,4 @@
+baseURL = 'http://kcirtap.io/'
+languageCode = 'en-us'
+title = 'Escapades in Engineering'
+theme = 'loveit'
