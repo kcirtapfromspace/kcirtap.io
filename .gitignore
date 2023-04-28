@@ -72,3 +72,4 @@ Thumbs.db
 # Private keys
 *.pem
 *.key
+.terraform.lock.hcl
