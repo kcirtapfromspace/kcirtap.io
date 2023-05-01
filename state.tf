@@ -2,11 +2,11 @@ terraform {
   backend "s3" {
     # Replace this with your bucket name!
     bucket         =  "kcirtapio-tf-state"
-    key            = "global/s3/terraform.tfstate"
+    key            = "kcirtap-io/root/terraform.tfstate"
     region         = "us-east-1"
 
     # Replace this with your DynamoDB table name!
-    dynamodb_table = "terraform_state"
+    dynamodb_table = "kcirtapio_terraform_state_root"
     encrypt        = true
   }
 }
@@ -24,7 +24,7 @@ resource "aws_kms_key" "terraform_bucket_key" {
 }
 
 resource "aws_kms_alias" "key_alias" {
-  name          = "alias/terraform_bucket_key"
+  name          = "alias/kcirtap_io_terraform_bucket_key"
   target_key_id = aws_kms_key.terraform_bucket_key.key_id
 }
 

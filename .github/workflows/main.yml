@@ -1,0 +1,43 @@
+name: Deploy Blog
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2
+      with:
+        hugo-version: 'latest'
+        extended: true
+
+    - name: Build
+      run: hugo --minify
+
+    - name: Setup AWS CLI
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::123456789100:role/my-github-actions-role
+        aws-region: us-east-1
+        role-session-name: MySessionName
+
+    - name: Initialize Terraform
+      working-directory: terraform
+      run: |
+        terraform init
+        terraform validate
+
+    - name: Apply Terraform
+      working-directory: terraform
+      run: terraform apply -auto-approve
+
+    - name: Deploy to S3
+      run: aws s3 sync public/ s3://${{ steps.terraform.outputs.s3_bucket_name }} --delete
