@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches: 
+      - main 
   workflow_dispatch:
     # Inputs the workflow expects.
     inputs:
@@ -11,6 +14,10 @@ on:
         description: 'TF File Path'     
         required: false
         default: 'ops/terraform'
+      hugo_path:
+        description: 'Hufo File Path'     
+        required: false
+        default: 'src'
 
 env:
   AWS_REGION : "us-east-1"
@@ -22,7 +29,7 @@ permissions:
 jobs:
   hugo-build:
     runs-on: ubuntu-latest
-
+    if:  ${{ inputs.hugo_path }} 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -35,6 +42,7 @@ jobs:
 
     - name: Build
       run: hugo --minify
+      working-directory: ${{ inputs.hugo_path }}
 
   terraform-plan:
     permissions:
@@ -45,18 +53,16 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
-        
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.4.6
-          
+
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_GH_OIDC_ROLE }}
           role-session-name: ${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.job }} 
           aws-region: ${{ env.AWS_REGION }}
+        
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
         
       - name: Terraform init, plan and apply
         run: |
@@ -68,7 +74,6 @@ jobs:
           echo "** Running Terraform Validate**"
           terraform validate
         working-directory: ${{ github.event.inputs.tfpath }}
-
           
       - name: Terraform Plan
         id: plan
