@@ -5,13 +5,20 @@ on:
     branches:
       - main
 
+env:
+  AWS_REGION : "us-east-1"
+# permission can be added at job level or workflow level    
+permissions:
+      id-token: write   # This is required for requesting the JWT through OIDC
+      contents: read    # This is required for actions/checkout
+      
 jobs:
-  deploy:
+  hugo-build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
@@ -22,22 +29,33 @@ jobs:
     - name: Build
       run: hugo --minify
 
-    - name: Setup AWS CLI
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: arn:aws:iam::123456789100:role/my-github-actions-role
-        aws-region: us-east-1
-        role-session-name: MySessionName
+  terraform-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+        
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.6
+          
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{env.AWS_GH_OIDC_ROLE}}
+          role-session-name: ${{ github.run_id }}/${{ github.job }}
+          aws-region: ${{ env.AWS_REGION }}
+        
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        
+      - name: Terraform Plan
+        id: plan
+        run: |
+          echo "## Terraform Plan" >> $GITHUB_STEP_SUMMARY
+          terraform plan -no-color >> $GITHUB_STEP_SUMMARY
 
-    - name: Initialize Terraform
-      working-directory: terraform
-      run: |
-        terraform init
-        terraform validate
-
-    - name: Apply Terraform
-      working-directory: terraform
-      run: terraform apply -auto-approve
-
-    - name: Deploy to S3
-      run: aws s3 sync public/ s3://${{ steps.terraform.outputs.s3_bucket_name }} --delete
+    # - name: Deploy to S3
+    #   run: aws s3 sync public/ s3://${{ steps.terraform.outputs.s3_bucket_name }} --delete
