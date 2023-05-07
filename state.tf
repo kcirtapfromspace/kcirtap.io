@@ -65,6 +65,10 @@ resource "aws_dynamodb_table" "terraform_state" {
   read_capacity  = 20
   write_capacity = 20
   hash_key       = "LockID"
+  server_side_encryption {
+    enabled = true
+    kms_key_arn = aws_kms_key.terraform_bucket_key.arn
+  }
 
   attribute {
     name = "LockID"
