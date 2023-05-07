@@ -1,12 +1,12 @@
 terraform {
   backend "s3" {
     # Replace this with your bucket name!
-    bucket         =  "kcirtapio-tf-state"
+    bucket         =  "kcirtap-tf-state"
     key            = "kcirtap-io/ops/terraform/terraform.tfstate"
     region         = "us-east-1"
 
     # Replace this with your DynamoDB table name!
-    dynamodb_table = "kcirtapio_terraform_state_ops"
+    dynamodb_table = "kcirtap_aws_infra_terraform_state_root"
     encrypt        = true
   }
 }

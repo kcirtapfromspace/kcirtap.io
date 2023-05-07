@@ -1,12 +1,12 @@
 terraform {
   backend "s3" {
     # Replace this with your bucket name!
-    bucket         =  "kcirtapio-tf-state"
+    bucket         =  "kcirtap-tf-state"
     key            = "kcirtap-io/root/terraform.tfstate"
     region         = "us-east-1"
 
     # Replace this with your DynamoDB table name!
-    dynamodb_table = "kcirtapio_terraform_state_root"
+    dynamodb_table = "kcirtap_aws_infra_terraform_state_root"
     encrypt        = true
   }
 }
@@ -61,7 +61,7 @@ resource "aws_s3_bucket_public_access_block" "block" {
 }
 
 resource "aws_dynamodb_table" "terraform_state" {
-  name           = "terraform_state"
+  name           = "kcirtapio_terraform_state_ops"
   read_capacity  = 20
   write_capacity = 20
   hash_key       = "LockID"
