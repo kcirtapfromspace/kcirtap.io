@@ -8,23 +8,9 @@ on:
     branches: 
       - main 
   workflow_dispatch:
-    # Inputs the workflow expects.
-    inputs:
-      tfpath:
-        description: 'TF File Path'     
-        required: false
-        default: 'ops/terraform'
-      hugo_path:
-        description: 'Hufo File Path'     
-        required: false
-        default: 'src'
 
 env:
   AWS_REGION : "us-east-1"
-# permission can be added at job level or workflow level    
-# permissions:
-#       id-token: write   # This is required for requesting the JWT through OIDC
-#       contents: read    # This is required for actions/checkout
       
 jobs:
   hugo-build:
@@ -39,6 +25,18 @@ jobs:
       with:
         submodules: recursive  # Fetch Hugo themes (true OR recursive)
         fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
+    - name: Clone obsidian content
+      env:
+        ACCESS_TOKEN: ${{ secrets.KFS_OBSIDIAN_DEPLOY_KEY }}
+      run: |
+        git config --global user.email "github-actions@example.com"
+        git config --global user.name "GitHub Actions"
+        git clone --filter=blob:none --no-checkout --sparse  https://x-access-token:${ACCESS_TOKEN}@github.com:kcirtapfromspace/obsidian.git content
+        cd content
+        git sparse-checkout init --cone
+        git sparse-checkout set content
+        git checkout main
 
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -55,7 +53,7 @@ jobs:
         hugo mod tidy
         hugo mod get -u
         hugo mod graph
-        hugo --gc --minify --cleanDestinationDir --destination public
+        hugo --gc  --minify --cleanDestinationDir --destination public --ignoreCache
         hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
 

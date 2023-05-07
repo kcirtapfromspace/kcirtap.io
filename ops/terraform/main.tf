@@ -80,6 +80,26 @@ resource "aws_s3_bucket_website_configuration" "site" {
   error_document {
     key = "404.html"
   }
+  routing_rules =  jsonencode([
+      {
+        Condition = {
+          HttpErrorCodeReturnedEquals = "404"
+        }
+        Redirect = {
+          Protocol = "https"
+          ReplaceKeyWith = "404.html"
+        }
+      },
+      {
+        Condition = {
+          KeyPrefixEquals = ""
+        }
+        Redirect = {
+          Protocol = "https"
+          ReplaceKeyPrefixWith = "/"
+        }
+      }
+    ])
 }
 
 # ACM SSL certificate
@@ -123,6 +143,44 @@ resource "aws_route53_record" "cert_validation" {
 resource "aws_acm_certificate_validation" "site_cert_validation" {
   certificate_arn         = aws_acm_certificate.site_cert.arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
+}
+# Create the Lambda function rewrite the request to the index.html file
+
+data "archive_file" "lambda_zip" {
+    type        = "zip"
+    source_dir  = "../lambda"
+    output_path = "lambda.zip"
+}
+
+resource "aws_lambda_function" "lambda_at_edge" {
+  function_name    = "LambdaAtEdge"
+  filename         = "lambda.zip"
+  source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
+  handler          = "index.handler"
+  role             = aws_iam_role.lambda_exec.arn
+  runtime          = "nodejs14.x"
+  publish          = true
+}
+
+# IAM role for the Lambda function
+resource "aws_iam_role" "lambda_exec" {
+  name = "lambda_exec"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = [
+            "lambda.amazonaws.com",
+            "edgelambda.amazonaws.com"
+          ]
+        }
+      }
+    ]
+  })
 }
 
 resource "aws_cloudfront_origin_access_control" "site" {
@@ -175,6 +233,12 @@ resource "aws_cloudfront_distribution" "site_distribution" {
     max_ttl                = 31536000
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
+
+    lambda_function_association {
+      event_type   = "origin-request"
+      lambda_arn   = aws_lambda_function.lambda_at_edge.qualified_arn
+      include_body = false
+    }
   }
   
   price_class = "PriceClass_100"
