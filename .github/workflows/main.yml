@@ -50,10 +50,18 @@ jobs:
           role-session-name: ${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.job }} 
           aws-region: ${{ env.AWS_REGION }}
         
-      - name: Terraform Init
-        id: init
-        run: terraform init
-        
+      - name: Terraform init, plan and apply
+        run: |
+          echo `pwd`
+          echo "tfpath ${{ github.event.inputs.tfpath }}"
+          echo "** Running Terraform Init**"
+          terraform init
+
+          echo "** Running Terraform Validate**"
+          terraform validate
+        working-directory: ${{ github.event.inputs.tfpath }}
+
+          
       - name: Terraform Plan
         id: plan
         run: |
