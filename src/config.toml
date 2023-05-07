@@ -41,17 +41,9 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
     pre = ""
     # you can add extra information after the name (HTML format is supported), such as icons
     post = ""
-    name = "Posts"
-    url = "/posts/"
+    name = "Archives"
+    url = "/Archives/"
     # title will be shown when you hover on this menu link
-    title = ""
-  [[menu.main]]
-    weight = 2
-    identifier = "blog"
-    pre = ""
-    post = ""
-    name = "Blog"
-    url = "/blog/"
     title = ""
   [[menu.main]]
     weight = 2
@@ -60,14 +52,6 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
     post = ""
     name = "Tags"
     url = "/tags/"
-    title = ""
-  [[menu.main]]
-    weight = 3
-    identifier = "categories"
-    pre = ""
-    post = ""
-    name = "Categories"
-    url = "/categories/"
     title = ""
   [[menu.main]]
     weight = 3
@@ -82,7 +66,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   # site default theme ["auto", "light", "dark"]
   defaultTheme = "auto"
   # public git repo url only then enableGitInfo is true
-  gitRepo = "https://github.com/kcirtapfromspace"
+  gitRepo = "https://github.com/kcirtapfromspace/kcirtap.io"
   #  which hash function used for SRI, when empty, no SRI is used
   # ["sha256", "sha384", "sha512", "md5"]
   fingerprint = "sha512"
@@ -98,7 +82,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   # Header config
   [params.header]
     # desktop header mode ["fixed", "normal", "auto"]
-    desktopMode = "fixed"
+    desktopMode = "auto"
     # mobile header mode ["fixed", "normal", "auto"]
     mobileMode = "auto"
     #  Header title config
@@ -120,15 +104,13 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
     #  Custom content (HTML format is supported)
     custom = ''
     #  whether to show Hugo and theme info
-    hugo = false
+    hugo = true
     #  whether to show copyright info
     copyright = true
     #  whether to show the author
     author = true
     # Site creation time
     since = 2023
-    # ICP info only in China (HTML format is supported)
-    icp = ""
     # license info (HTML format is supported)
     license = '<a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>'
 
@@ -157,7 +139,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
     # whether to omit favicon resource links
     noFavicon = false
     # modern SVG favicon to use in place of older style .png and .ico files
-    svgFavicon = ""
+    svgFavicon = "/static/safari-pinned-tab.svg"
     # Android browser theme color
     themeColor = "#ffffff"
     # Safari mask icon color
