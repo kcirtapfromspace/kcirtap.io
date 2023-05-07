@@ -58,7 +58,7 @@ jobs:
     
     - name: Build
       run: |
-        hugo --minify
+        hugo serve -e production
       working-directory: ./src
 
     - name: Deploy
