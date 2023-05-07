@@ -56,11 +56,12 @@ jobs:
         hugo mod get -u
         hugo mod graph
         hugo --gc --minify --cleanDestinationDir --destination public
+        hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
 
-    - name: Deploy
-      run: aws s3 sync --sse --storage-class INTELLIGENT_TIERING --region ${{ env.AWS_REGION }} public/ s3://kcirtap.io/
-      working-directory: ./src
+    # - name: Deploy
+    #   run: aws s3 sync --sse --storage-class INTELLIGENT_TIERING --region ${{ env.AWS_REGION }} public/ s3://kcirtap.io/
+    #   working-directory: ./src
 
   terraform-plan:
     permissions:

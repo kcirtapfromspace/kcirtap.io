@@ -31,7 +31,33 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   name = "Patrick Deutsch"
   email = "patrickdeutsch@gmail.com"
   link = "/about/"
+# Deployments config
+[deployment]
+order = [".jpg$", ".gif$"]
+  [[deployment.targets]]
+  name = "kcirtap.io"
+  URL = "s3://kcirtap.io?region=us-east-1"
+  cloudFrontDistributionID = "E1MS8SPVA2H1K3"
+  [[deployment.matchers]]
+  # Cache static assets for 1 year.
+  pattern = "^.+\\.(js|css|svg|ttf)$"
+  cacheControl = "max-age=31536000, no-transform, public"
+  gzip = true
 
+  [[deployment.matchers]]
+  pattern = "^.+\\.(png|jpg)$"
+  cacheControl = "max-age=31536000, no-transform, public"
+  gzip = false
+
+  [[deployment.matchers]]
+  # Set custom content type for /sitemap.xml
+  pattern = "^sitemap\\.xml$"
+  contentType = "application/xml"
+  gzip = true
+
+  [[deployment.matchers]]
+  pattern = "^.+\\.(html|xml|json)$"
+  gzip = true
 # Menu config
 [menu]
   [[menu.main]]
