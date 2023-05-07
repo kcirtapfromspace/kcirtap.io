@@ -29,7 +29,7 @@ permissions:
 jobs:
   hugo-build:
     runs-on: ubuntu-latest
-    # if:  ${{ inputs.hugo_path }} 
+    if:  ${{ inputs.hugo_path }} 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -48,7 +48,7 @@ jobs:
       id-token: write # This is required for requesting the JWT
       contents: read  # This is required for actions/checkout
     runs-on: ubuntu-latest
-    # if:  ${{ inputs.tfpath }} 
+    if:  ${{ inputs.tfpath }} 
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
@@ -66,13 +66,13 @@ jobs:
       - name: Terraform init, plan and apply
         run: |
           echo `pwd`
-          echo "tfpath ${{ github.action_path }}/${{ github.event.inputs.tfpath }}"
+          echo "tfpath ${{ github.workspace }}/${{ github.event.inputs.tfpath }}"
           echo "** Running Terraform Init**"
           terraform init
 
           echo "** Running Terraform Validate**"
           terraform validate
-        working-directory: ${{ github.action_path }}/${{ github.event.inputs.tfpath }}
+        working-directory: ${{ github.workspace }}/${{ github.event.inputs.tfpath }}
           
       - name: Terraform Plan
         id: plan
