@@ -45,9 +45,10 @@ jobs:
         
   terraform-plan:
     defaults:
-      run:
-        working-directory: ${{ env.tf_actions_working_dir }}
+        run:
+          working-directory: ${{ env.TF_ACTIONS_WORKING_DIR }}
     permissions:
+      pull-requests: write
       id-token: write # This is required for requesting the JWT
       contents: read  # This is required for actions/checkout
     runs-on: ubuntu-latest
