@@ -1,7 +1,7 @@
 baseURL = "http://kcirtap.io/"
 languageCode = "en-us"
 title = "escapades in engineering"
-theme = "LoveIt"
+theme = "loveit"
 sectionPagesMenu = "main"
 
 # language code ["en", "zh-CN", "fr", "pl", ...]
