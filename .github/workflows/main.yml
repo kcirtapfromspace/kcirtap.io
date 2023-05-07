@@ -28,6 +28,9 @@ env:
       
 jobs:
   hugo-build:
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read  # This is required for actions/checkout
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -48,7 +51,6 @@ jobs:
     - name: Build
       run: hugo --buildFuture
       working-directory: ./src
-
 
     - name: Deploy
       run: aws s3 sync --size-only --region public s3://kcirtap.io
