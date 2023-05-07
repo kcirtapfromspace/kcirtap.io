@@ -51,13 +51,13 @@ jobs:
       # with:
         # extended: true
 
-    # - name: get theme
-    #   working-directory: ./src
+    - name: get theme
+      run: git submodule add git@github.com:dillonzq/LoveIt.git themes/loveit	
+      working-directory: ./src
     
     - name: Build
       run: |
         hugo --minify
-        git submodule add https://github.com/dillonzq/LoveIt.git themes/loveit	
       working-directory: ./src
 
     - name: Deploy
