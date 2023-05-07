@@ -29,7 +29,6 @@ env:
 jobs:
   hugo-build:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.hugo_path }} 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -39,9 +38,10 @@ jobs:
       with:
         hugo-version: 'latest'
         extended: true
-
+        
     - name: Build
       run: hugo --minify
+      working-directory: ${{ inputs.hugo_path }}
 
   terraform-plan:
     permissions:
