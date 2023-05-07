@@ -48,6 +48,10 @@ jobs:
       with:
         extended: true
 
+    - name: get theme
+      run:  git submodule add https://github.com/dillonzq/LoveIt.git themes/loveit	
+      working-directory: ./src
+      
     - name: Build
       run: hugo --buildFuture
       working-directory: ./src
