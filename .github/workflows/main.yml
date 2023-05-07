@@ -49,14 +49,14 @@ jobs:
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
       with:
-        extended: true
+        # extended: true
 
     # - name: get theme
     #   run:  git submodule add https://github.com/dillonzq/LoveIt.git themes/loveit	
     #   working-directory: ./src
 
     - name: Build
-      run: hugo --buildFuture
+      run: hugo --minify
       working-directory: ./src
 
     - name: Deploy
