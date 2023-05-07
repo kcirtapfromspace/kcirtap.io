@@ -46,7 +46,7 @@ jobs:
   terraform-plan:
     defaults:
         run:
-          working-directory: ${{ env.TF_ACTIONS_WORKING_DIR }}
+          working-directory: ${{ github.workspace }}/${{ env.TF_ACTIONS_WORKING_DIR }}
     permissions:
       pull-requests: write
       id-token: write # This is required for requesting the JWT
