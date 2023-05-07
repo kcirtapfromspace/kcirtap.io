@@ -78,11 +78,12 @@ jobs:
         id: validate
         run: terraform validate
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
-
+        
       - name: Terraform Plan
         id: plan
         run: terraform plan
         continue-on-error: true
+        working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
