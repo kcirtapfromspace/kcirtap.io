@@ -76,7 +76,7 @@ jobs:
         id: init
         run: terraform init
         working-directory: ${{ github.workspace }}/${{ env.TF_ACTIONS_WORKING_DIR }}
-    
+
       - name: Terraform Validate
         id: validate
         run: terraform validate
@@ -145,5 +145,9 @@ jobs:
                 body: output
               })
             }
+            
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
     # - name: Deploy to S3
     #   run: aws s3 sync public/ s3://${{ steps.terraform.outputs.s3_bucket_name }} --delete
