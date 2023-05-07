@@ -17,6 +17,9 @@ provider "aws" {
 
 locals {
   domain_name = "kcirtap.io"
+  tags = {
+    Terraform = "true"
+  }
 }
 
 
