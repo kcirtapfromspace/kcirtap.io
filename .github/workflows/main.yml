@@ -32,16 +32,20 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_GH_OIDC_ROLE }}
+        role-session-name: ${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.job }} 
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
       with:
         hugo-version: 'latest'
         extended: true
-
-    - name: Build
-      run: hugo --minify
-      working-directory: src
+      env:
+        MINIFY: 'true'
 
   terraform-plan:
     permissions:
@@ -158,5 +162,4 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-    # - name: Deploy to S3
-    #   run: aws s3 sync public/ s3://${{ steps.terraform.outputs.s3_bucket_name }} --delete
+
