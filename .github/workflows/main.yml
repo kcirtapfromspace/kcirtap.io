@@ -48,16 +48,18 @@ jobs:
       with:
         extended: true
 
-    - name: get theme
-      run:  git submodule add https://github.com/dillonzq/LoveIt.git themes/loveit	
-      working-directory: ./src
-      
+    # - name: get theme
+    #   run:  git submodule add https://github.com/dillonzq/LoveIt.git themes/loveit	
+    #   working-directory: ./src
+
     - name: Build
       run: hugo --buildFuture
       working-directory: ./src
 
     - name: Deploy
       run: aws s3 sync --size-only --region public s3://kcirtap.io
+      working-directory: ./src
+
 
   terraform-plan:
     permissions:
