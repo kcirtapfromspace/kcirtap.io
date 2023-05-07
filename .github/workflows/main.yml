@@ -37,8 +37,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        submodules: true  # Fetch Hugo themes (true OR recursive)
+        submodules: recursive  # Fetch Hugo themes (true OR recursive)
         fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -51,9 +52,9 @@ jobs:
       # with:
         # extended: true
 
-    - name: get theme
-      run: git submodule add git@github.com:dillonzq/LoveIt.git themes/loveit	
-      working-directory: ./src
+    # - name: get theme
+    #   run: git submodule add git@github.com:dillonzq/LoveIt.git themes/loveit	
+    #   working-directory: ./src
     
     - name: Build
       run: |
