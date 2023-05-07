@@ -60,16 +60,16 @@ jobs:
           role-session-name: ${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.job }} 
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Run terraform
-        uses: scott-doyland-burrows/gha-composite-terraform-iamlive@v1
-        with:
-          # GhAppId: ${{ secrets.GHA_APP_ID }} # used to generate token to pull in terraform modules
-          # GhAppKey: ${{ secrets.GHA_APP_KEY }} # used to generate token to pull in terraform modules
-          AwsRole: ${{ secrets.AWS_GH_OIDC_ROLE }} # AWS OIDC role that can access the statefile S3 bucket
-          TerraformDir: ${{ vars.TF_ACTIONS_WORKING_DIR }}
-          TerraformTfVars: ${{ github.workflow }} # .tfvars file
-          # TerraformAction: apply # terraform action
-          IamLive: true # run iamlive
+      # - name: Run terraform
+      #   uses: scott-doyland-burrows/gha-composite-terraform-iamlive@v1
+      #   with:
+      #     # GhAppId: ${{ secrets.GHA_APP_ID }} # used to generate token to pull in terraform modules
+      #     # GhAppKey: ${{ secrets.GHA_APP_KEY }} # used to generate token to pull in terraform modules
+      #     AwsRole: ${{ secrets.AWS_GH_OIDC_ROLE }} # AWS OIDC role that can access the statefile S3 bucket
+      #     TerraformDir: ${{ vars.TF_ACTIONS_WORKING_DIR }}
+      #     TerraformTfVars: ${{ github.workflow }} # .tfvars file
+      #     # TerraformAction: apply # terraform action
+      #     IamLive: true # run iamlive
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
