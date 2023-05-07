@@ -52,7 +52,9 @@ jobs:
     
     - name: Build
       run: |
+        hugo mod tidy
         hugo mod get -u
+        hugo mod graph
         hugo --gc --minify --cleanDestinationDir --destination public
       working-directory: ./src
 
