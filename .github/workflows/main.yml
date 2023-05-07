@@ -67,17 +67,17 @@ jobs:
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
-        working-directory: ${{ env.TF_ACTIONS_WORKING_DIR }}
+        working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Init
         id: init
         run: terraform init
-        working-directory: ${{ env.TF_ACTIONS_WORKING_DIR }}
+        working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Validate
         id: validate
         run: terraform validate
-        working-directory: ${{ env.TF_ACTIONS_WORKING_DIR }}
+        working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Plan
         id: plan
