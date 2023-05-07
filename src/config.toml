@@ -61,11 +61,14 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
     name = "About"
     url = "/about/"
     title = ""
-    
+
 [module]
   [[module.imports]]
     path = "github.com/dillonzq/LoveIt"
-
+    disable = false
+    ignoreConfig = false
+    ignoreImports = false
+    
 [params]
   # site default theme ["auto", "light", "dark"]
   defaultTheme = "auto"
