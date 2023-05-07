@@ -1,9 +1,1 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>Escapades in Engineering</title>
-        <link>http://kcirtap.io/</link>
-        <description>This is my cool site</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language>
-            <atom:link href="http://kcirtap.io/index.xml" rel="self" type="application/rss+xml" />
-        </channel>
-</rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>escapades in engineering</title><link>http://kcirtap.io/</link><description>This is my cool site</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><managingEditor>patrickdeutsch@gmail.com (Patrick Deutsch)</managingEditor><webMaster>patrickdeutsch@gmail.com (Patrick Deutsch)</webMaster><lastBuildDate>Mon, 01 May 2023 16:22:46 -0600</lastBuildDate><atom:link href="http://kcirtap.io/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
