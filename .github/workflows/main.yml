@@ -22,9 +22,9 @@ on:
 env:
   AWS_REGION : "us-east-1"
 # permission can be added at job level or workflow level    
-permissions:
-      id-token: write   # This is required for requesting the JWT through OIDC
-      contents: read    # This is required for actions/checkout
+# permissions:
+#       id-token: write   # This is required for requesting the JWT through OIDC
+#       contents: read    # This is required for actions/checkout
       
 jobs:
   hugo-build:
@@ -44,11 +44,15 @@ jobs:
       run: hugo --minify
 
   terraform-plan:
+
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
     permissions:
+      pull-requests: write
       id-token: write # This is required for requesting the JWT
       contents: read  # This is required for actions/checkout
     runs-on: ubuntu-latest
-    if:  ${{ inputs.tfpath }} 
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
@@ -62,23 +66,72 @@ jobs:
         
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-        
-      - name: Terraform init, plan and apply
-        run: |
-          echo `pwd`
-          echo "tfpath ${{ github.workspace }}/${{ github.event.inputs.tfpath }}"
-          echo "** Running Terraform Init**"
-          terraform init
+    
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
 
-          echo "** Running Terraform Validate**"
-          terraform validate
-        working-directory: ${{ github.workspace }}/${{ github.event.inputs.tfpath }}
-          
       - name: Terraform Plan
         id: plan
-        run: |
-          echo "## Terraform Plan" >> $GITHUB_STEP_SUMMARY
-          terraform plan -no-color >> $GITHUB_STEP_SUMMARY
+        run: terraform plan -no-color
+        continue-on-error: true
 
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // 1. Retrieve existing bot comments for the PR
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            })
+            const botComment = comments.find(comment => {
+              return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
+            })
+
+            // 2. Prepare format of the comment
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            // 3. If we have a comment, update it, otherwise create a new one
+            if (botComment) {
+              github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: output
+              })
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output
+              })
+            }
     # - name: Deploy to S3
     #   run: aws s3 sync public/ s3://${{ steps.terraform.outputs.s3_bucket_name }} --delete
