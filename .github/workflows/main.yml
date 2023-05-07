@@ -59,7 +59,7 @@ jobs:
       working-directory: ./src
 
     - name: Deploy
-      run: aws s3 sync --sse --region ${{ env.AWS_REGION }} public s3://kcirtap.io/ --dry-run
+      run: aws s3 sync --sse aws:kms --region ${{ env.AWS_REGION }} public s3://kcirtap.io/ --dry-run
       working-directory: ./src
 
   terraform-plan:
