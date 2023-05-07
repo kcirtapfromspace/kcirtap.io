@@ -48,7 +48,7 @@ jobs:
 
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
-      with:
+      # with:
         # extended: true
 
     # - name: get theme
