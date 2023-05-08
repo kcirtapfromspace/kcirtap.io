@@ -68,7 +68,6 @@ jobs:
         hugo mod get -u
         hugo mod graph
         hugo --gc  --minify --cleanDestinationDir --destination public --ignoreCache
-        hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
 
     - name: Deploy
