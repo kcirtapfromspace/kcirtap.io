@@ -64,7 +64,7 @@ order = [".jpg$", ".gif$"]
 [menu]
   [[menu.main]]
     weight = 1
-    identifier = "main"
+    identifier = "archives"
     # you can add extra information before the name (HTML format is supported), such as icons
     pre = ""
     # you can add extra information after the name (HTML format is supported), such as icons
@@ -97,7 +97,7 @@ order = [".jpg$", ".gif$"]
   gitRepo = "https://github.com/kcirtapfromspace/kcirtap.io"
   #  which hash function used for SRI, when empty, no SRI is used
   # ["sha256", "sha384", "sha512", "md5"]
-  fingerprint = "sha512"
+  fingerprint = ""
   #  date format
   dateFormat = "2006-01-02"
   # website title for Open Graph and Twitter Cards
@@ -305,7 +305,9 @@ order = [".jpg$", ".gif$"]
     Phone = ""
     Email = "patrickdeutsch@gmail.com"
     RSS = true # 
-
+    [params.social.Mastodon]
+      id = "@kcirtapfromspace"
+      prefix = "https://data-folks.masto.host"
   #  Page global config
   [params.page]
     #  whether to hide a page from home page
@@ -557,3 +559,98 @@ order = [".jpg$", ".gif$"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
   taxonomyTerm = ["HTML"]
+
+# Multilingual
+[languages]
+  [languages.en]
+    weight = 1
+    languageCode = "en"
+    languageName = "English"
+    hasCJKLanguage = false
+    copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License."
+    [languages.en.menu]
+      [[languages.en.menu.main]]
+        weight = 1
+        identifier = "archives"
+        pre = ""
+        post = ""
+        name = "Archives"
+        url = "/archives/"
+        title = ""
+      [[languages.en.menu.main]]
+        weight = 2
+        identifier = "tags"
+        pre = ""
+        post = ""
+        name = "Tags"
+        url = "/tags/"
+        title = ""
+      [[languages.en.menu.main]]
+        weight = 3
+        identifier = "categories"
+        pre = ""
+        post = ""
+        name = "Categories"
+        url = "/categories/"
+        title = ""
+      [[languages.en.menu.main]]
+        weight = 4
+        identifier = "documentation"
+        pre = ""
+        post = ""
+        name = "Docs"
+        url = "/categories/documentation/"
+        title = ""
+      [[languages.en.menu.main]]
+        weight = 5
+        identifier = "about"
+        pre = ""
+        post = ""
+        name = "About"
+        url = "/about/"
+        title = ""
+      [[languages.en.menu.main]]
+        weight = 6
+        identifier = "github"
+        pre = "<i class='fab fa-github fa-fw' aria-hidden='true'></i>"
+        post = ""
+        name = ""
+        url = "https://github.com/kcirtapfromspace/kcirtap.io"
+        title = "GitHub"
+    [languages.en.params]
+      [languages.en.params.search]
+        enable = true
+        type = "algolia"
+        contentLength = 4000
+        placeholder = ""
+        maxResultLength = 10
+        snippetLength = 30
+        highlightTag = "em"
+        absoluteURL = false
+        [languages.en.params.search.algolia]
+          index = "index.en"
+          appID = "PASDMWALPK"
+          searchKey = "b42948e51daaa93df92381c8e2ac0f93"
+      [languages.en.params.home]
+        rss = 10
+        [languages.en.params.home.profile]
+          enable = true
+          gravatarEmail = ""
+          avatarURL = "/images/avatar.png"
+          title = ""
+          subtitle = "A Clean, Elegant but Advanced Hugo Theme"
+          typeit = true
+          social = true
+          disclaimer = ""
+      [languages.en.params.social]
+        GitHub = "kcirtapfromspace"
+        Linkedin = "patrickdeutsch"
+        Twitter = "leypatrey"
+        Keybase = "kcirtapfromspace"
+        Spotify = "1240093218"
+        Kofi= "kcirtapfromspace"
+        Email = "patrickdeutsch@gmail.com"
+        RSS = true # 
+        [languages.en.params.social.Mastodon]
+          id = "@kcirtapfromspace"
+          prefix = "https://data-folks.masto.host"
