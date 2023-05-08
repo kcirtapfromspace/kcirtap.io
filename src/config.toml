@@ -305,9 +305,10 @@ order = [".jpg$", ".gif$"]
     Phone = ""
     Email = "patrickdeutsch@gmail.com"
     RSS = true # 
-  [params.social.Mastodon]
-    id = "@kcirtapfromspace"
-    prefix = "https://data-folks.masto.host"
+    [params.social.Mastodon]
+      id = "@kcirtapfromspace"
+      prefix = "https://data-folks.masto.host"
+      
   #  Page global config
   [params.page]
     #  whether to hide a page from home page
