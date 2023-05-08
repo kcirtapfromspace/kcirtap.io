@@ -32,11 +32,13 @@ jobs:
       run: |
         git config --global user.email "github-actions@example.com"
         git config --global user.name "GitHub Actions"
-        git clone --filter=blob:none --no-checkout --sparse  https://x-access-token:${ACCESS_TOKEN}@github.com:kcirtapfromspace/obsidian.git content
-        cd content
+        git clone --filter=blob:none --filter=blob:none--no-checkout --sparse  https://x-access-token:${ACCESS_TOKEN}@github.com:kcirtapfromspace/obsidian obsidian
+        cd obsidian
         git sparse-checkout init --cone
-        git sparse-checkout set content
         git checkout main
+        git sparse-checkout set Blog
+        ls -lah
+        mv Blog ../src/content/blog
 
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v2
