@@ -26,13 +26,16 @@ jobs:
         submodules: recursive  # Fetch Hugo themes (true OR recursive)
         fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.OBSIDIAN_DEPLOY_KEY }}
+
     - name: Clone obsidian content
-      env:
-        ACCESS_TOKEN: ${{ secrets.KFS_OBSIDIAN_DEPLOY_KEY }}
       run: |
         git config --global user.email "github-actions@example.com"
         git config --global user.name "GitHub Actions"
-        git clone --filter=blob:none --no-checkout --sparse  https://github.com/kcirtapfromspace/obsidian obsidian
+        git clone --filter=blob:none --no-checkout --sparse  git@github.com:kcirtapfromspace/obsidian.git obsidian
         cd obsidian
         git sparse-checkout init --cone
         git checkout main
