@@ -29,6 +29,7 @@ jobs:
         fi
 
   hugo-build:
+    needs: check-for-deploy
     permissions:
       id-token: write # This is required for requesting the JWT
       contents: write  # This is required for actions/checkout
@@ -95,6 +96,7 @@ jobs:
     #   working-directory: ./src
 
   terraform-plan:
+    needs: check-for-deploy
     permissions:
       pull-requests: write
       id-token: write # This is required for requesting the JWT
