@@ -17,8 +17,8 @@ env:
 jobs:
   check-for-deploy:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+    outputs:
+      deploy: ${{ steps.check-commit-message.outputs.deploy }}
     steps:
     - name: Check commit message
       run: |
@@ -86,17 +86,11 @@ jobs:
       working-directory: ./src
 
     - name: Deploy
-      # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-      # if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, ':\ release')
-      # if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && (find(github.event.head_commit.message, '^chore\\(main\\): release \\d+\\.\\d+\\.\\d+') >= 0)
-      if: ${{ env.DEPLOY}}  == 'true'
+      if: needs.check-for-deploy.outputs.deploy == 'true'
       run: |
+        echo "${{env.DEPLOY}}"
         hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
-
-    # - name: Deploy
-    #   run: aws s3 sync --sse --storage-class INTELLIGENT_TIERING --region ${{ env.AWS_REGION }} public/ s3://kcirtap.io/
-    #   working-directory: ./src
 
   terraform-plan:
     needs: check-for-deploy
@@ -154,10 +148,7 @@ jobs:
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Apply
-        # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-        # if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, ':\ release')
-        # if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && (find(github.event.head_commit.message, '^chore\\(main\\): release \\d+\\.\\d+\\.\\d+') >= 0)
-        if: ${{ env.DEPLOY}}  == 'true'
+        if: needs.check-for-deploy.outputs.deploy == 'true'
         id: apply
         run: terraform plan -no-color
         continue-on-error: true
