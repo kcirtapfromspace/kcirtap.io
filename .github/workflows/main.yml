@@ -30,6 +30,7 @@ jobs:
     - name: Check commit message
       run: |
         echo "${{ env.DEPLOY }}"
+        echo "${{ steps.check-commit-message.outputs.DEPLOY }}"
 
   hugo-build:
     needs: [check-for-deploy,terraform-plan]
