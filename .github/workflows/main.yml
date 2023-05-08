@@ -71,7 +71,7 @@ jobs:
       working-directory: ./src
 
     - name: Deploy
-      if: github.event_name == 'release'
+      if: github.event_name == 'release' && github.ref == 'refs/heads/main'
       run: |
         hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
@@ -134,8 +134,8 @@ jobs:
         continue-on-error: true
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
-      - name: Terraform Plan
-        if: github.event_name == 'release' 
+      - name: Terraform Apply
+        if: github.event_name == 'release' && github.ref == 'refs/heads/main'
         id: apply
         run: terraform plan -no-color
         continue-on-error: true
