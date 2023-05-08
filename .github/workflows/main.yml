@@ -1,6 +1,8 @@
 name: Deploy Blog
 
 on:
+  repository_dispatch:
+    types: [obsidian_push]
   push:
     branches:
       - main
@@ -25,6 +27,8 @@ jobs:
       with:
         submodules: recursive  # Fetch Hugo themes (true OR recursive)
         fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+        ref: ${{ github.event.client_payload.ref }}
+    - run: echo ${{ github.event.client_payload.sha }}
 
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.8.0
