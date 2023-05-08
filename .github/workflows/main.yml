@@ -87,7 +87,7 @@ jobs:
       working-directory: ./src
 
     - name: Deploy
-      if: ${{ needs.check-for-deploy.outputs.DEPLOY }} == 'true'
+      if: needs.check-for-deploy.outputs.DEPLOY == 'true'
       run: |
         echo "DEPLOY: ${{ needs.check-for-deploy.outputs.DEPLOY }}"
         hugo deploy --maxDeletes -1 --invalidateCDN
