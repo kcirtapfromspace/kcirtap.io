@@ -31,6 +31,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   name = "Patrick Deutsch"
   email = "patrickdeutsch@gmail.com"
   link = "/about/"
+
 # Deployments config
 [deployment]
 order = [".jpg$", ".gif$"]
@@ -58,17 +59,18 @@ order = [".jpg$", ".gif$"]
   [[deployment.matchers]]
   pattern = "^.+\\.(html|xml|json)$"
   gzip = true
+
 # Menu config
 [menu]
   [[menu.main]]
     weight = 1
-    identifier = "posts"
+    identifier = "main"
     # you can add extra information before the name (HTML format is supported), such as icons
     pre = ""
     # you can add extra information after the name (HTML format is supported), such as icons
     post = ""
     name = "Archives"
-    url = "/Archives/"
+    url = "/archives/"
     # title will be shown when you hover on this menu link
     title = ""
   [[menu.main]]
