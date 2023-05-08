@@ -32,7 +32,7 @@ jobs:
         echo "${{ env.DEPLOY }}"
 
   hugo-build:
-    needs: check-for-deploy
+    needs: [check-for-deploy,terraform-plan]
     permissions:
       id-token: write # This is required for requesting the JWT
       contents: write  # This is required for actions/checkout
