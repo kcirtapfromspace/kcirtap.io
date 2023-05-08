@@ -22,12 +22,11 @@ jobs:
     steps:
     - name: Check commit message
       run: |
-        if echo "${{ github.event.head_commit.message }}" | grep -qE '^chore\\(main\\):[[:space:]]release[[:space:]]([0-9]+\\.){2}[0-9]+$'; then
+        if echo "${{ github.event.head_commit.message }}" | grep -qE '^chore\(main\):[[:space:]]release[[:space:]]([0-9]+\.){{2}}[0-9]+$'; then
           echo "DEPLOY=true" >> $GITHUB_ENV
         else
           echo "DEPLOY=false" >> $GITHUB_ENV
         fi
-
 
   hugo-build:
     permissions:
