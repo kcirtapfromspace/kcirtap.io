@@ -23,7 +23,7 @@ jobs:
     - name: Check commit message
       id: check-commit-message
       run: |
-        if echo "${{ github.event.head_commit.message }}" | grep -qE '^chore\(main\):[[:space:]]release[[:space:]]([0-9]+\.){{2}}[0-9]+$'; then
+        if echo "${{ github.event.head_commit.message }}" | grep -qE '(?s)^Merge pull request #\d+.*?release \d+\.\d+\.\d+$'; then
           echo "DEPLOY=true" >> $GITHUB_OUTPUT
         else
           echo "DEPLOY=false" >> $GITHUB_OUTPUT
