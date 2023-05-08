@@ -41,7 +41,7 @@ jobs:
         git checkout main
         git sparse-checkout set the_archive
         ls -lah
-        mv the_archive ../src/content/the_archive
+        mv the_archive ../src/content/archives
 
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v2
