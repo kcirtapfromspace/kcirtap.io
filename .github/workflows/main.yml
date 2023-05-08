@@ -15,6 +15,19 @@ env:
   AWS_REGION : "us-east-1"
       
 jobs:
+  check-for-deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+    - name: Check commit message
+      run: |
+        if [[ ${{ github.event.head_commit.message }} =~ ^chore\(main\):[[:space:]]release[[:space:]]([0-9]+\.){2}[0-9]+$ ]]; then
+          echo "DEPLOY=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY=false" >> $GITHUB_ENV
+        fi
+
   hugo-build:
     permissions:
       id-token: write # This is required for requesting the JWT
@@ -71,7 +84,8 @@ jobs:
     - name: Deploy
       # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
       # if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, ':\ release')
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && (find(github.event.head_commit.message, '^chore\\(main\\): release \\d+\\.\\d+\\.\\d+') >= 0)
+      # if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && (find(github.event.head_commit.message, '^chore\\(main\\): release \\d+\\.\\d+\\.\\d+') >= 0)
+      if: env.DEPLOY == 'true'
       run: |
         hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
@@ -137,7 +151,8 @@ jobs:
       - name: Terraform Apply
         # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         # if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, ':\ release')
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && (find(github.event.head_commit.message, '^chore\\(main\\): release \\d+\\.\\d+\\.\\d+') >= 0)
+        # if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && (find(github.event.head_commit.message, '^chore\\(main\\): release \\d+\\.\\d+\\.\\d+') >= 0)
+        if: env.DEPLOY == 'true'
         id: apply
         run: terraform plan -no-color
         continue-on-error: true
