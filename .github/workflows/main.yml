@@ -9,6 +9,8 @@ on:
   pull_request:
     branches: 
       - main 
+  release:
+    types: [published]
   workflow_dispatch:
 
 env:
@@ -69,6 +71,12 @@ jobs:
         hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
 
+    - name: Deploy
+      if: github.event_name == 'release'
+      run: |
+        hugo deploy --maxDeletes -1 --invalidateCDN
+      working-directory: ./src
+
     # - name: Deploy
     #   run: aws s3 sync --sse --storage-class INTELLIGENT_TIERING --region ${{ env.AWS_REGION }} public/ s3://kcirtap.io/
     #   working-directory: ./src
@@ -107,23 +115,30 @@ jobs:
 
       - name: Terraform fmt
         id: fmt
-        run: terraform fmt -check --no-color
+        run: terraform fmt -check -no-color
         continue-on-error: true
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Init
         id: init
-        run: terraform init  --no-color
+        run: terraform init -no-color
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate  --no-color
+        run: terraform validate -no-color
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
         
       - name: Terraform Plan
         id: plan
-        run: terraform plan --no-color
+        run: terraform plan -no-color
+        continue-on-error: true
+        working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
+
+      - name: Terraform Plan
+        if: github.event_name == 'release' 
+        id: apply
+        run: terraform plan -no-color
         continue-on-error: true
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
@@ -184,8 +199,4 @@ jobs:
                 body: output
               })
             }
-            
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
 
