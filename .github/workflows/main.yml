@@ -107,23 +107,23 @@ jobs:
 
       - name: Terraform fmt
         id: fmt
-        run: terraform fmt -check
+        run: terraform fmt -check --no-color
         continue-on-error: true
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init  --no-color
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate
+        run: terraform validate  --no-color
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
         
       - name: Terraform Plan
         id: plan
-        run: terraform plan
+        run: terraform plan --no-color
         continue-on-error: true
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
