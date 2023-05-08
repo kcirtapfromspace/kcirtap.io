@@ -89,8 +89,7 @@ jobs:
     - name: Deploy
       if: ${{ needs.check-for-deploy.outputs.DEPLOY }} == 'true'
       run: |
-        echo "DEPLOY1: ${{ steps.check-comment-message.outputs.DEPLOY }}"
-        echo "DEPLOY1: ${{ needs.check-for-deploy.outputs.DEPLOY }}"
+        echo "DEPLOY: ${{ needs.check-for-deploy.outputs.DEPLOY }}"
         hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
 
@@ -150,7 +149,7 @@ jobs:
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Apply
-        if: ${{ needs.check-for-deploy.outputs.DEPLOY }} == 'true'
+        if: needs.check-for-deploy.outputs.DEPLOY == 'true'
         id: apply
         run: terraform plan -no-color
         continue-on-error: true
