@@ -18,14 +18,14 @@ jobs:
   check-for-deploy:
     runs-on: ubuntu-latest
     outputs:
-      deploy: ${{ steps.check-commit-message.outputs.deploy }}
+      deploy: ${{ steps.check-commit-message.outputs.DEPLOY }}
     steps:
     - name: Check commit message
       run: |
         if echo "${{ github.event.head_commit.message }}" | grep -qE '^chore\(main\):[[:space:]]release[[:space:]]([0-9]+\.){{2}}[0-9]+$'; then
-          echo "DEPLOY=true" >> $GITHUB_ENV
+          echo "DEPLOY=true" >> $GITHUB_OUTPUT
         else
-          echo "DEPLOY=false" >> $GITHUB_ENV
+          echo "DEPLOY=false" >> $GITHUB_OUTPUT
         fi
     - name: Check commit message
       run: |
@@ -86,9 +86,9 @@ jobs:
       working-directory: ./src
 
     - name: Deploy
-      if: needs.check-for-deploy.outputs.deploy == 'true'
+      if: ${{ steps.check-commit-message.outputs.DEPLOY }} == 'true'
       run: |
-        echo "${{env.DEPLOY}}"
+        echo "DEPLOY:${{steps.check-comment-message.outputs.DEPLOY}}"
         hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
 
@@ -148,7 +148,7 @@ jobs:
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Apply
-        if: needs.check-for-deploy.outputs.deploy == 'true'
+        if: ${{ steps.check-commit-message.outputs.DEPLOY }} == 'true'
         id: apply
         run: terraform plan -no-color
         continue-on-error: true
