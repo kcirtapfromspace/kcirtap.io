@@ -71,7 +71,8 @@ jobs:
       working-directory: ./src
 
     - name: Deploy
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+      # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+      if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, ':\ release')
       run: |
         hugo deploy --maxDeletes -1 --invalidateCDN
       working-directory: ./src
@@ -135,7 +136,8 @@ jobs:
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Apply
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, ':\ release')
         id: apply
         run: terraform plan -no-color
         continue-on-error: true
