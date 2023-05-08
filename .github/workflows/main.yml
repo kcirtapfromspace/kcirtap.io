@@ -41,7 +41,7 @@ jobs:
         git checkout main
         git sparse-checkout set Blog
         ls -lah
-        mv Blog ../src/content/blog
+        mv the_archive ${{ github.workflow }}/src/content/blog
 
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v2
