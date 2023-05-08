@@ -27,7 +27,7 @@ jobs:
         fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
     - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
+      uses: webfactory/ssh-agent@v0.8
       with:
         ssh-private-key: ${{ secrets.KFS_OBSIDIAN_DEPLOY_KEY }}
 
