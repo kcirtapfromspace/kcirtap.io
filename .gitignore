@@ -2,7 +2,7 @@
 
 # Hugo build output
 /public/
-
+lambda.zip
 # Terraform
 .terraform/
 *.tfstate
