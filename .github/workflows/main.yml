@@ -39,9 +39,9 @@ jobs:
         cd obsidian
         git sparse-checkout init --cone
         git checkout main
-        git sparse-checkout set the_archive
+        git sparse-checkout set the_archives
         ls -lah
-        mv the_archive ../src/content/archives
+        mv the_archives ../src/content/archives
 
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v2
