@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
     # Replace this with your bucket name!
-    bucket         =  "kcirtap-tf-state"
-    key            = "kcirtap-io/ops/terraform/terraform.tfstate"
-    region         = "us-east-1"
+    bucket = "kcirtap-tf-state"
+    key    = "kcirtap-io/ops/terraform/terraform.tfstate"
+    region = "us-east-1"
 
     # Replace this with your DynamoDB table name!
     dynamodb_table = "kcirtap_aws_infra_terraform_state_root"
@@ -53,8 +53,8 @@ resource "aws_s3_bucket_policy" "site_public_read" {
     Id      = "PolicyForCloudFrontPrivateContent"
     Statement = [
       {
-        Sid       = "AllowCloudFrontServicePrincipal"
-        Effect    = "Allow"
+        Sid    = "AllowCloudFrontServicePrincipal"
+        Effect = "Allow"
         Principal = {
           Service = "cloudfront.amazonaws.com"
         }
@@ -80,33 +80,33 @@ resource "aws_s3_bucket_website_configuration" "site" {
   error_document {
     key = "404.html"
   }
-  routing_rules =  jsonencode([
-      {
-        Condition = {
-          HttpErrorCodeReturnedEquals = "404"
-        }
-        Redirect = {
-          Protocol = "https"
-          ReplaceKeyWith = "404.html"
-        }
-      },
-      {
-        Condition = {
-          KeyPrefixEquals = ""
-        }
-        Redirect = {
-          Protocol = "https"
-          ReplaceKeyPrefixWith = "/"
-        }
+  routing_rules = jsonencode([
+    {
+      Condition = {
+        HttpErrorCodeReturnedEquals = "404"
       }
-    ])
+      Redirect = {
+        Protocol       = "https"
+        ReplaceKeyWith = "404.html"
+      }
+    },
+    {
+      Condition = {
+        KeyPrefixEquals = ""
+      }
+      Redirect = {
+        Protocol             = "https"
+        ReplaceKeyPrefixWith = "/"
+      }
+    }
+  ])
 }
 
 # ACM SSL certificate
 resource "aws_acm_certificate" "site_cert" {
-  domain_name       = data.aws_route53_zone.site.name
-  subject_alternative_names        = [data.aws_route53_zone.site.name]
-  validation_method = "DNS"
+  domain_name               = data.aws_route53_zone.site.name
+  subject_alternative_names = [data.aws_route53_zone.site.name]
+  validation_method         = "DNS"
   # key_algorithm ="EC_secp384r1" # Does not work with CloudFront
 
   tags = {
@@ -118,7 +118,7 @@ resource "aws_acm_certificate" "site_cert" {
   }
 }
 
-data "aws_route53_zone"  "site" {
+data "aws_route53_zone" "site" {
   name         = local.domain_name
   private_zone = false
 }
@@ -147,15 +147,15 @@ resource "aws_acm_certificate_validation" "site_cert_validation" {
 # Create the Lambda function rewrite the request to the index.html file
 
 data "archive_file" "lambda_zip" {
-    type        = "zip"
-    source_dir  = "../lambda"
-    output_path = "lambda.zip"
+  type        = "zip"
+  source_dir  = "../lambda"
+  output_path = "lambda.zip"
 }
 
 resource "aws_lambda_function" "lambda_at_edge" {
   function_name    = "LambdaAtEdge"
   filename         = "lambda.zip"
-  source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   handler          = "index.handler"
   role             = aws_iam_role.lambda_exec.arn
   runtime          = "nodejs14.x"
@@ -191,7 +191,7 @@ resource "aws_cloudfront_origin_access_control" "site" {
   signing_protocol                  = "sigv4"
 }
 
-resource aws_cloudfront_origin_access_identity "site" {
+resource "aws_cloudfront_origin_access_identity" "site" {
   comment = "Allow CloudFront to reach the S3 bucket"
 }
 
@@ -208,8 +208,8 @@ data "aws_cloudfront_response_headers_policy" "site" {
 # CloudFront distribution
 resource "aws_cloudfront_distribution" "site_distribution" {
   origin {
-    domain_name = aws_s3_bucket.site.bucket_regional_domain_name
-    origin_id   = data.aws_route53_zone.site.name
+    domain_name              = aws_s3_bucket.site.bucket_regional_domain_name
+    origin_id                = data.aws_route53_zone.site.name
     origin_access_control_id = aws_cloudfront_origin_access_control.site.id
 
   }
@@ -217,14 +217,14 @@ resource "aws_cloudfront_distribution" "site_distribution" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  http_version = "http2and3"
-  aliases = [local.domain_name]
+  http_version        = "http2and3"
+  aliases             = [local.domain_name]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
     target_origin_id = data.aws_route53_zone.site.name
-    cache_policy_id = data.aws_cloudfront_cache_policy.site.id
+    cache_policy_id  = data.aws_cloudfront_cache_policy.site.id
     # origin_request_policy_id = data.aws_cloudfront_origin_request_policy.site.id # Does not work with CloudFront & S3
 
 
@@ -240,7 +240,7 @@ resource "aws_cloudfront_distribution" "site_distribution" {
       include_body = false
     }
   }
-  
+
   price_class = "PriceClass_100"
 
   viewer_certificate {

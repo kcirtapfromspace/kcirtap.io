@@ -1,7 +1,7 @@
 # .gitignore
 
 # Hugo build output
-/public/
+public/
 lambda.zip
 # Terraform
 .terraform/
@@ -73,3 +73,5 @@ Thumbs.db
 *.pem
 *.key
 .terraform.lock.hcl
+src/resources/_gen/assets/scss/css/style.scss_26962b449d539ee5c1301a7879e5bb0e.content
+src/resources/_gen/assets/scss/css/style.scss_26962b449d539ee5c1301a7879e5bb0e.json
