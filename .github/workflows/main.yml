@@ -99,10 +99,12 @@ jobs:
       working-directory: ./src
 
     - name: Deploy
-      if: ${{needs.check-for-deploy.outputs.deploy}} == 'true'
+      env:
+        deploy: ${{needs.check-for-deploy.outputs.deploy}}
+      if: ${{env.deploy}} == 'true'
       run: |
         echo "DEPLOY: ${{ needs.check-for-deploy.outputs.deploy }}"
-        hugo deploy --maxDeletes -1 --invalidateCDN --invalidateURLs --confirm --target=production
+        hugo deploy --maxDeletes -1 --invalidateCDN 
       working-directory: ./src
 
   terraform-plan:
@@ -161,7 +163,7 @@ jobs:
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Apply
-        if: ${{needs.check-for-deploy.outputs.deploy}}" == 'true'
+        if: needs.check-for-deploy.outputs.deploy == 'true'
         id: apply
         run: |
           terraform apply -no-color -auto-approve
