@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.22 (2023-05-09)
+
+## What's Changed
+* chore: update socials by @kcirtapfromspace in https://github.com/kcirtapfromspace/kcirtap.io/pull/25
+
+
+**Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.1.21...v0.1.22
+
 ## 0.1.21 (2023-05-09)
 
 ## What's Changed
