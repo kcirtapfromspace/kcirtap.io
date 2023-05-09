@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.23 (2023-05-09)
+
+## What's Changed
+* Main-content-layout by @kcirtapfromspace in https://github.com/kcirtapfromspace/kcirtap.io/pull/27
+* chore: cleanup by @kcirtapfromspace in https://github.com/kcirtapfromspace/kcirtap.io/pull/28
+
+
+**Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.1.22...v0.1.23
+
 ## 0.1.22 (2023-05-09)
 
 ## What's Changed
