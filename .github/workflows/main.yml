@@ -149,9 +149,16 @@ jobs:
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Apply
-        if: ${{needs.check-for-deploy.outputs.deploy}} == 'true'
+        env:
+          DEPLOY: ${{needs.check-for-deploy.outputs.deploy}} 
+        if: env.DEPLOY == 'true'
         id: apply
-        run: terraform plan -no-color
+        run: |
+          echo "DEPLOY: $DEPLOY"
+          echo "env.DEPLOY: ${{env.DEPLOY}}"
+          echo "env.DEPLOY: env.DEPLOY"
+          echo "needs.check.output.DEPLOY: ${{needs.check-for-deploy.outputs.deploy}}"
+          terraform plan -no-color
         continue-on-error: true
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
