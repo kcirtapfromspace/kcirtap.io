@@ -91,7 +91,7 @@ jobs:
       if: ${{needs.check-for-deploy.outputs.deploy}} == 'true'
       run: |
         echo "DEPLOY: ${{ needs.check-for-deploy.outputs.deploy }}"
-        hugo deploy --maxDeletes -1 --invalidateCDN
+        hugo deploy --maxDeletes -1 --invalidateCDN --invalidateURLs --confirm --target=production
       working-directory: ./src
 
   terraform-plan:
@@ -129,7 +129,7 @@ jobs:
 
       - name: Terraform fmt
         id: fmt
-        run: terraform fmt -check -no-color
+        run: terraform fmt -check -diff -recursive -no-color
         continue-on-error: true
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
