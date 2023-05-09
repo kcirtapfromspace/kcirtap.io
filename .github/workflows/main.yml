@@ -6,6 +6,10 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    # Sequence of patterns matched against refs/heads
+    branches:    
+      - main
   release:
     types: [published]
   workflow_dispatch:
@@ -28,10 +32,10 @@ jobs:
         else
           echo "DEPLOY=false" >> $GITHUB_OUTPUT
         fi
-    - name: Check commit message
-      run: |
-        echo "head_commit.message: ${{ github.event.head_commit.message }}"
-        echo "outputs.DEPLOY: ${{ steps.check-commit-message.outputs.DEPLOY }}"
+    # - name: Check commit message
+    #   run: |
+    #     echo "head_commit.message: ${{ github.event.head_commit.message }}"
+    #     echo "outputs.DEPLOY: ${{ steps.check-commit-message.outputs.DEPLOY }}"
 
   hugo-build:
     needs: [check-for-deploy,terraform-plan]
@@ -85,6 +89,13 @@ jobs:
         hugo mod get -u
         hugo mod graph
         hugo --gc  --minify --cleanDestinationDir --destination public --ignoreCache
+      working-directory: ./src
+
+    - name: Deploy Dry Run
+      if: ${{needs.check-for-deploy.outputs.deploy}} == 'false'
+      run: |
+        echo "DEPLOY: ${{ needs.check-for-deploy.outputs.deploy }}"
+        hugo deploy --maxDeletes -1 --invalidateCDN --dryRun
       working-directory: ./src
 
     - name: Deploy
@@ -150,16 +161,10 @@ jobs:
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
       - name: Terraform Apply
-        env:
-          DEPLOY: ${{needs.check-for-deploy.outputs.deploy}} 
-        if: env.DEPLOY == 'true'
+        if: ${{needs.check-for-deploy.outputs.deploy}}" == 'true'
         id: apply
         run: |
-          echo "DEPLOY: $DEPLOY"
-          echo "env.DEPLOY: ${{env.DEPLOY}}"
-          echo "env.DEPLOY: env.DEPLOY"
-          echo "needs.check.output.DEPLOY: ${{needs.check-for-deploy.outputs.deploy}}"
-          terraform plan -no-color
+          terraform apply -no-color -auto-approve
         continue-on-error: true
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
