@@ -92,16 +92,14 @@ jobs:
       working-directory: ./src
 
     - name: Deploy Dry Run
-      if: ${{needs.check-for-deploy.outputs.deploy}} == 'false'
+      if: needs.check-for-deploy.outputs.deploy == 'false'
       run: |
         echo "DEPLOY: ${{ needs.check-for-deploy.outputs.deploy }}"
         hugo deploy --maxDeletes -1 --invalidateCDN --dryRun
       working-directory: ./src
 
-    - name: Deploy
-      env:
-        deploy: ${{needs.check-for-deploy.outputs.deploy}}
-      if: ${{env.deploy}} == 'true'
+    - name: Hugo Deploy
+      if: needs.check-for-deploy.outputs.deploy == 'true'
       run: |
         echo "DEPLOY: ${{ needs.check-for-deploy.outputs.deploy }}"
         hugo deploy --maxDeletes -1 --invalidateCDN 
