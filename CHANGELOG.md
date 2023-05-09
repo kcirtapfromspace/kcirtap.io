@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.21 (2023-05-09)
+
+## What's Changed
+* chore: update workflow by @kcirtapfromspace in https://github.com/kcirtapfromspace/kcirtap.io/pull/23
+
+
+**Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.1.20...v0.1.21
+
 ## 0.1.20 (2023-05-09)
 
 **Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.1.19...v0.1.20
