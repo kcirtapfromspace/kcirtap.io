@@ -30,7 +30,7 @@ jobs:
         fi
     - name: Check commit message
       run: |
-        echo "head_commit.message: ${{ github.event.head_commit.message }}"
+        echo "head_commit.message: ${{ toJSON(github.event.head_commit.message) }}"
         echo "outputs.DEPLOY: ${{ steps.check-commit-message.outputs.DEPLOY }}"
 
   hugo-build:
