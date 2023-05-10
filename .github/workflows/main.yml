@@ -34,7 +34,6 @@ jobs:
           echo "DEPLOY=false" >> $GITHUB_OUTPUT
         fi
     - name: Extract content repo commit SHA
-      if: needs.check-for-deploy.outputs.deploy == 'true'
       id: extract-sha
       run: |
         COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
