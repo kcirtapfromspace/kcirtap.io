@@ -74,7 +74,6 @@ jobs:
         git clone --filter=blob:none --no-checkout --sparse  git@github.com:kcirtapfromspace/obsidian.git obsidian
         cd obsidian
         git sparse-checkout init --cone
-        git remote add origin git@github.com:kcirtapfromspace/obsidian.git
         git fetch origin ${{ github.event.client_payload.sha }}
         git checkout ${{ github.event.client_payload.sha }}
         git sparse-checkout set the_archives
@@ -117,7 +116,6 @@ jobs:
         git clone --filter=blob:none --no-checkout --sparse git@github.com:kcirtapfromspace/obsidian.git obsidian
         cd obsidian
         git sparse-checkout init --cone
-        git remote add origin git@github.com:kcirtapfromspace/obsidian.git
         git fetch origin ${{ needs.check-for-deploy.outputs.content_repo_sha }}
         git checkout ${{ needs.check-for-deploy.outputs.content_repo_sha }}
         git sparse-checkout set the_archives
