@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       deploy: ${{ steps.check-commit-message.outputs.DEPLOY }}
+      content_repo_sha: ${{ steps.check-commit-message.outputs.CONTENT_REPO_SHA }}
     steps:
     - name: Check commit message
       id: check-commit-message
@@ -32,6 +33,13 @@ jobs:
         else
           echo "DEPLOY=false" >> $GITHUB_OUTPUT
         fi
+    - name: Extract content repo commit SHA
+      if: needs.check-for-deploy.outputs.deploy == 'true'
+      id: extract-sha
+      run: |
+        COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
+        CONTENT_REPO_SHA=$(echo $COMMIT_MESSAGE | grep -oP '(?<=sha: )[0-9a-f]{40}')
+        echo "CONTENT_REPO_SHA=$CONTENT_REPO_SHA" >> $GITHUB_OUTPUT
     # - name: Check commit message
     #   run: |
     #     echo "head_commit.message: ${{ github.event.head_commit.message }}"
@@ -59,13 +67,16 @@ jobs:
         ssh-private-key: ${{ secrets.KFS_OBSIDIAN_DEPLOY_KEY }}
 
     - name: Clone obsidian content
+      if: needs.check-for-deploy.outputs.deploy == 'false'
       run: |
         git config --global user.email "github-actions@example.com"
         git config --global user.name "GitHub Actions"
         git clone --filter=blob:none --no-checkout --sparse  git@github.com:kcirtapfromspace/obsidian.git obsidian
         cd obsidian
         git sparse-checkout init --cone
-        git checkout main
+        git remote add origin git@github.com:kcirtapfromspace/obsidian.git
+        git fetch origin ${{ github.event.client_payload.sha }}
+        git checkout ${{ github.event.client_payload.sha }}
         git sparse-checkout set the_archives
         ls -lah
         mv the_archives ../src/content/
@@ -98,7 +109,22 @@ jobs:
         hugo deploy --maxDeletes -1 --invalidateCDN --dryRun
       working-directory: ./src
 
-    - name: Hugo Deploy
+    - name: Prod - Clone obsidian content
+      if: needs.check-for-deploy.outputs.deploy == 'true'
+      run: |
+        git config --global user.email "github-actions@example.com"
+        git config --global user.name "GitHub Actions"
+        git clone --filter=blob:none --no-checkout --sparse git@github.com:kcirtapfromspace/obsidian.git obsidian
+        cd obsidian
+        git sparse-checkout init --cone
+        git remote add origin git@github.com:kcirtapfromspace/obsidian.git
+        git fetch origin ${{ needs.check-for-deploy.outputs.content_repo_sha }}
+        git checkout ${{ needs.check-for-deploy.outputs.content_repo_sha }}
+        git sparse-checkout set the_archives
+        ls -lah
+        mv the_archives ../src/content/
+
+    - name: Prod - Hugo Deploy
       if: needs.check-for-deploy.outputs.deploy == 'true'
       run: |
         echo "DEPLOY: ${{ needs.check-for-deploy.outputs.deploy }}"
