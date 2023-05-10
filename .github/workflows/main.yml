@@ -33,6 +33,10 @@ jobs:
         else
           echo "DEPLOY=false" >> $GITHUB_OUTPUT
         fi
+        
+    - name: Checkout main repo
+      uses: actions/checkout@v2
+
     - name: Extract content repo commit SHA
       id: extract-sha
       run: |
