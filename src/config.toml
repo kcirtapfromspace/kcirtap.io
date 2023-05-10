@@ -234,7 +234,7 @@ order = [".jpg$", ".gif$"]
       social = true
       #  disclaimer (HTML format is supported)
      
-      disclaimer = "If you enjoyed some of the stuff I wrote, you can <a rel="external nofollow noopener noreffer" href="https://ko-fi.com/kcirtapfromspace" target="_blank">buy me a coffee ☕️</a>, I’d really appreciate it! Thanks!🙏"
+      disclaimer = 'If you enjoyed some of the stuff I wrote, you can <a rel="external nofollow noopener noreffer" href="https://ko-fi.com/kcirtapfromspace" target="_blank">buy me a coffee ☕️</a>, I’d really appreciate it! Thanks!🙏'
     # Home page posts
     [params.home.posts]
       enable = true
