@@ -116,6 +116,7 @@ jobs:
         hugo mod tidy
         hugo mod get -u
         hugo mod graph
+        sed -i "s/GOOGLE_ANALYTICS_ID_PLACEHOLDER/${secrets.GOOGLE_ANALYTICS_ID}/g" config.toml
         hugo --gc  --minify --cleanDestinationDir --destination public --ignoreCache
       working-directory: ./src
 

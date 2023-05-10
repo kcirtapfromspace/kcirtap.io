@@ -13,7 +13,7 @@ hasCJKLanguage = false
 # default amount of posts in each pages
 paginate = 12
 # google analytics code [UA-XXXXXXXX-X]
-googleAnalytics = ""
+googleAnalytics = "GOOGLE_ANALYTICS_ID_PLACEHOLDER"
 # copyright description used only for seo schema
 copyright = ""
 
@@ -400,10 +400,10 @@ order = [".jpg$", ".gif$"]
 
   #  Analytics config
   [params.analytics]
-    enable = false
+    enable = true
     # Google Analytics
     [params.analytics.google]
-      id = ""
+      id = "GOOGLE_ANALYTICS_ID_PLACEHOLDER"
       # whether to anonymize IP
       anonymizeIP = true
     # Fathom Analytics
@@ -485,9 +485,6 @@ order = [".jpg$", ".gif$"]
 
 # Privacy config
 [privacy]
-  #  privacy of the Google Analytics (replaced by params.analytics.google)
-  [privacy.googleAnalytics]
-    # ...
   [privacy.twitter]
     enableDNT = true
   [privacy.youtube]
