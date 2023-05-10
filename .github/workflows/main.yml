@@ -114,10 +114,9 @@ jobs:
       if: needs.check-for-deploy.outputs.deploy == 'true'
       run: |
         echo 'googleAnalytics = "${{ secrets.GOOGLE_ANALYTICS_ID }}"' >> config/production/config.toml
+      working-directory: ./src
 
     - name: Build
-      env:
-        GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
       run: |
         hugo mod tidy
         hugo mod get -u
