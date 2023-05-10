@@ -114,14 +114,16 @@ jobs:
 
     - name: Prod - Clone obsidian content
       if: needs.check-for-deploy.outputs.deploy == 'true'
+      env:
+        content_repo_sha: needs.check-for-deploy.outputs.content_repo_sha
       run: |
         git config --global user.email "github-actions@example.com"
         git config --global user.name "GitHub Actions"
         git clone --filter=blob:none --no-checkout --sparse git@github.com:kcirtapfromspace/obsidian.git obsidian
         cd obsidian
         git sparse-checkout init --cone
-        git fetch origin ${{ needs.check-for-deploy.outputs.content_repo_sha }}
-        git checkout ${{ needs.check-for-deploy.outputs.content_repo_sha }}
+        git fetch origin ${{ env.content_repo_sha }}
+        git checkout ${{ env.content_repo_sha }}
         git sparse-checkout set the_archives
         ls -lah
         mv the_archives ../src/content/
