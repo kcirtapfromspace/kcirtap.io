@@ -112,11 +112,13 @@ jobs:
         extended: true
     
     - name: Build
+      env:
+        GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
       run: |
         hugo mod tidy
         hugo mod get -u
         hugo mod graph
-        sed -i 's/GOOGLE_ANALYTICS_ID_PLACEHOLDER/${{secrets.GOOGLE_ANALYTICS_ID}}/g' config.toml
+        sed -i "s/GOOGLE_ANALYTICS_ID_PLACEHOLDER/$GOOGLE_ANALYTICS_ID/g" config.toml
         hugo --gc  --minify --cleanDestinationDir --destination public --ignoreCache
       working-directory: ./src
 
