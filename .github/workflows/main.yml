@@ -42,14 +42,7 @@ jobs:
     - name: Extract content repo commit SHA
       id: extract-sha
       run: |
-        CONTENT_REPO_SHA=""
-        for commit in $(git rev-list HEAD); do
-          COMMIT_MESSAGE=$(git show -s --format=%s $commit)
-          CONTENT_REPO_SHA=$(echo $COMMIT_MESSAGE | grep -oP '(?<=sha: )[0-9a-f]{40}')
-          if [[ ! -z "$CONTENT_REPO_SHA" ]]; then
-            break
-          fi
-        done
+        CONTENT_REPO_SHA=$(git log --oneline | grep -oPm1 '(?<=docs: Obsidian Disbatch ref: refs/heads/main, sha: )[0-9a-f]{40}')
         echo "CONTENT_REPO_SHA=$CONTENT_REPO_SHA" >> $GITHUB_OUTPUT
     # - name: Check commit message
     #   run: |
