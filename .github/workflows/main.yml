@@ -110,7 +110,11 @@ jobs:
       with:
         hugo-version: 'latest'
         extended: true
-    
+    - name: Hugo Config
+      if: needs.check-for-deploy.outputs.deploy == 'true'
+      run: |
+        echo 'googleAnalytics = "${{ secrets.GOOGLE_ANALYTICS_ID }}"' >> config/production/config.toml
+
     - name: Build
       env:
         GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
@@ -118,7 +122,6 @@ jobs:
         hugo mod tidy
         hugo mod get -u
         hugo mod graph
-        sed -i "s/GOOGLE_ANALYTICS_ID_PLACEHOLDER/$GOOGLE_ANALYTICS_ID/g" config.toml
         hugo --gc  --minify --cleanDestinationDir --destination public --ignoreCache
       working-directory: ./src
 
