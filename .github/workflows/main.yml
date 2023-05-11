@@ -110,10 +110,11 @@ jobs:
       with:
         hugo-version: 'latest'
         extended: true
+
     - name: Hugo Config
       if: needs.check-for-deploy.outputs.deploy == 'true'
       run: |
-        echo "googleAnalytics = `${{ secrets.GOOGLE_ANALYTICS_ID }}`" >> config/production/config.toml
+        echo "googleAnalytics = \"${{ secrets.GOOGLE_ANALYTICS_ID }}\"" >> config/production/config.toml
       working-directory: ./src
 
     - name: Build
