@@ -114,7 +114,8 @@ jobs:
     - name: Hugo Config
       if: needs.check-for-deploy.outputs.deploy == 'true'
       run: |
-        echo -e "googleAnalytics = \"${{ secrets.GOOGLE_ANALYTICS_ID }}\"\n[params.analytics.google]\n    id = \"${{ secrets.GOOGLE_ANALYTICS_ID }}\"" >> config/production/config.toml
+        echo -e "googleAnalytics = \"${{ secrets.GOOGLE_ANALYTICS_ID }}\"\n[params.analytics.google]\n    id = \"${{ secrets.GOOGLE_ANALYTICS_ID }}\"" >> config/${{ vars.HUGO_ENVIRONMENT }}/config.toml
+        cat config/${{ vars.HUGO_ENVIRONMENT }}/config.toml
       working-directory: ./src
 
     - name: Build
@@ -136,7 +137,7 @@ jobs:
       if: needs.check-for-deploy.outputs.deploy == 'true'
       run: |
         echo "DEPLOY: ${{ needs.check-for-deploy.outputs.deploy }}"
-        hugo deploy --maxDeletes -1 --invalidateCDN --environment ${{ vars.HUGO_ENVIRONMENT }}
+        hugo deploy --maxDeletes -1 --invalidateCDN --environment ${{ vars.HUGO_ENVIRONMENT }} 
       working-directory: ./src
 
   terraform-plan:
