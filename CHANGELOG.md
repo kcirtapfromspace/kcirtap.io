@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.50 (2023-05-11)
+
+## What's Changed
+* feat: analytics by @kcirtapfromspace in https://github.com/kcirtapfromspace/kcirtap.io/pull/56
+
+
+**Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.1.49...v0.1.50
+
 ## 0.1.49 (2023-05-11)
 
 **Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.1.48...v0.1.49
