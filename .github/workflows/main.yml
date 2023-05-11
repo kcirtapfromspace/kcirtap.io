@@ -122,7 +122,7 @@ jobs:
         hugo mod tidy
         hugo mod get -u
         hugo mod graph
-        hugo --gc  --minify --cleanDestinationDir --destination public --ignoreCache
+        hugo --gc  --minify --cleanDestinationDir --destination public --ignoreCache --environment ${{ env.HUGO_ENVIRONMENT}}
       working-directory: ./src
 
     - name: Deploy Dry Run
