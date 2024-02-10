@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.10 (2024-02-10)
+
+**Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.2.9...v0.2.10
+
 ## 0.2.9 (2024-02-10)
 
 **Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.2.8...v0.2.9
