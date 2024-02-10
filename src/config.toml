@@ -507,7 +507,6 @@ order = [".jpg$", ".gif$"]
   page = ["HTML", "MarkDown"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
-  taxonomyTerm = ["HTML"]
 
 # Multilingual
 # [languages]
