@@ -66,7 +66,7 @@ jobs:
     - run: echo ${{ github.event.client_payload.sha }}
 
     - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.8.0
+      uses: webfactory/ssh-agent@v0.9.0
       with:
         ssh-private-key: ${{ secrets.KFS_OBSIDIAN_DEPLOY_KEY }}
 
@@ -99,7 +99,7 @@ jobs:
         mv the_archives ../src/content/
 
     - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_GH_OIDC_ROLE }}
         role-session-name: ${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.job }} 
