@@ -25,24 +25,27 @@ jobs:
       deploy: ${{ steps.check-commit-message.outputs.DEPLOY }}
       content_repo_sha: ${{ steps.extract-sha.outputs.CONTENT_REPO_SHA }}
     steps:
-    - name: Check commit message
-      id: check-commit-message
-      run: |
-        if echo "${{ github.event.head_commit.message }}" | grep -Pq '(?s)chore\((.+)\):\srelease\s\d+\.\d+\.\d+'; then
-          echo "DEPLOY=true" >> $GITHUB_OUTPUT
-        else
-          echo "DEPLOY=false" >> $GITHUB_OUTPUT
-        fi
-
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: Extract content repo commit SHA
-      id: extract-sha
+    - name: Extract content repo commit SHA and changes
+      id: extract-details
       run: |
-        # Directly use the GitHub context to get the SHA of the commit that triggered this workflow
-        echo "CONTENT_REPO_SHA=${{ github.sha }}" >> $GITHUB_ENV
+        # Extract the commit SHA from the commit message
+        CONTENT_REPO_SHA=$(echo "${{ github.event.head_commit.message }}" | grep -oP '(?<=sha: )[0-9a-f]{40}')
+        # Assuming changes summary is included in the commit message after a specific marker
+        CHANGES_SUMMARY=$(echo "${{ github.event.head_commit.message }}" | grep -oP '(?<=Changes in '\''the_archives'\'': ).*')
+        echo "CONTENT_REPO_SHA=$CONTENT_REPO_SHA" >> $GITHUB_ENV
+        echo "CHANGES_SUMMARY=$CHANGES_SUMMARY" >> $GITHUB_ENV
+
+    - name: Decide on Deployment
+      run: |
+        if [ -n "$CHANGES_SUMMARY" ]; then
+          echo "DEPLOY=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY=false" >> $GITHUB_ENV
+        fi
 
   hugo-build:
     needs: [check-for-deploy,terraform-plan]
