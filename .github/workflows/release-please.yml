@@ -15,8 +15,4 @@ jobs:
       - uses: google-github-actions/release-please-action@v4
         with:
           release-type: simple
-          # monorepo-tags: false
-          # bump-minor-pre-major: true
-          # bump-patch-for-minor-pre-major: true
-          # changelog-notes-type: github
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
