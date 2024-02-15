@@ -38,16 +38,11 @@ jobs:
       with:
         fetch-depth: 0
 
-
     - name: Extract content repo commit SHA
       id: extract-sha
       run: |
-        CONTENT_REPO_SHA=$(git log --oneline | grep -oPm1 '(?<=docs: Obsidian Disbatch ref: refs/heads/main, sha: )[0-9a-f]{40}')
-        echo "CONTENT_REPO_SHA=$CONTENT_REPO_SHA" >> $GITHUB_OUTPUT
-    # - name: Check commit message
-    #   run: |
-    #     echo "head_commit.message: ${{ github.event.head_commit.message }}"
-    #     echo "outputs.DEPLOY: ${{ steps.check-commit-message.outputs.DEPLOY }}"
+        # Directly use the GitHub context to get the SHA of the commit that triggered this workflow
+        echo "CONTENT_REPO_SHA=${{ github.sha }}" >> $GITHUB_ENV
 
   hugo-build:
     needs: [check-for-deploy,terraform-plan]
