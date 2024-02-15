@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.16 (2024-02-15)
+
+## What's Changed
+* Create dependabot.yml by @kcirtapfromspace in https://github.com/kcirtapfromspace/kcirtap.io/pull/87
+
+
+**Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.2.15...v0.2.16
+
 ## [0.2.15](https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.2.14...v0.2.15) (2024-02-15)
 
 
