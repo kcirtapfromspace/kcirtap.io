@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.15](https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.2.14...v0.2.15) (2024-02-15)
+
+
+### Bug Fixes
+
+* need token? ([42d6c58](https://github.com/kcirtapfromspace/kcirtap.io/commit/42d6c5875b6f0186d866a210a6b92be02d7c401b))
+* plz rls? ([5830b11](https://github.com/kcirtapfromspace/kcirtap.io/commit/5830b11f1dc04e53f078bd300e1d01d96f6af116))
+
 ## 0.2.14 (2024-02-14)
 
 **Full Changelog**: https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.2.13...v0.2.14
