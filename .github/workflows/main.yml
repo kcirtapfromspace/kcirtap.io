@@ -25,27 +25,25 @@ jobs:
       deploy: ${{ steps.check-commit-message.outputs.DEPLOY }}
       content_repo_sha: ${{ steps.extract-sha.outputs.CONTENT_REPO_SHA }}
     steps:
+    - name: Check commit message
+      id: check-commit-message
+      run: |
+        if echo "${{ github.event.head_commit.message }}" | grep -Pq '(?s)chore\((.+)\):\srelease\s\d+\.\d+\.\d+'; then
+          echo "DEPLOY=true" >> $GITHUB_OUTPUT
+        else
+          echo "DEPLOY=false" >> $GITHUB_OUTPUT
+        fi
+
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: Extract content repo commit SHA and changes
-      id: extract-details
-      run: |
-        # Extract the commit SHA from the commit message
-        CONTENT_REPO_SHA=$(echo "${{ github.event.head_commit.message }}" | grep -oP '(?<=sha: )[0-9a-f]{40}')
-        # Assuming changes summary is included in the commit message after a specific marker
-        CHANGES_SUMMARY=$(echo "${{ github.event.head_commit.message }}" | grep -oP '(?<=Changes in '\''the_archives'\'': ).*')
-        echo "CONTENT_REPO_SHA=$CONTENT_REPO_SHA" >> $GITHUB_ENV
-        echo "CHANGES_SUMMARY=$CHANGES_SUMMARY" >> $GITHUB_ENV
 
-    - name: Decide on Deployment
+    - name: Extract content repo commit SHA
+      id: extract-sha
       run: |
-        if [ -n "$CHANGES_SUMMARY" ]; then
-          echo "DEPLOY=true" >> $GITHUB_ENV
-        else
-          echo "DEPLOY=false" >> $GITHUB_ENV
-        fi
+        CONTENT_REPO_SHA=$(git log --oneline | grep -oPm1 '(?<=docs: Obsidian Disbatch ref: refs/heads/main, sha: )[0-9a-f]{40}')
+        echo "CONTENT_REPO_SHA=$CONTENT_REPO_SHA" >> $GITHUB_OUTPUT
 
   hugo-build:
     needs: [check-for-deploy,terraform-plan]
@@ -64,7 +62,7 @@ jobs:
     - run: echo ${{ github.event.client_payload.sha }}
 
     - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.9.0
+      uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ secrets.KFS_OBSIDIAN_DEPLOY_KEY }}
 
@@ -97,7 +95,7 @@ jobs:
         mv the_archives ../src/content/
 
     - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_GH_OIDC_ROLE }}
         role-session-name: ${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.job }} 
@@ -150,26 +148,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_GH_OIDC_ROLE }}
           role-session-name: ${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.job }} 
           aws-region: ${{ env.AWS_REGION }}
 
-      # - name: Run terraform
-      #   uses: scott-doyland-burrows/gha-composite-terraform-iamlive@v1
-      #   with:
-      #     GhAppId: ${{ secrets.GHA_APP_ID }} # used to generate token to pull in terraform modules
-      #     GhAppKey: ${{ secrets.GHA_APP_KEY }} # used to generate token to pull in terraform modules
-      #     AwsRole: ${{ secrets.AWS_GH_OIDC_ROLE }} # AWS OIDC role that can access the statefile S3 bucket
-      #     TerraformDir: ${{ vars.TF_ACTIONS_WORKING_DIR }}
-      #     TerraformTfVars: ${{ github.workflow }} # .tfvars file
-      #     TerraformStateFileBucket: kcirtap-tf-state #${{ secrets.TF_STATEFILE_BUCKET }} # S3 bucket to store statefile
-      #     # TerraformAction: apply # terraform action
-      #     IamLive: true # run iamlive
-
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v2
 
       - name: Terraform fmt
         id: fmt
@@ -201,7 +187,7 @@ jobs:
         continue-on-error: true
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
@@ -258,4 +244,3 @@ jobs:
                 body: output
               })
             }
-
