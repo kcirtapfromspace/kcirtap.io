@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.17](https://github.com/kcirtapfromspace/kcirtap.io/compare/v0.2.16...v0.2.17) (2024-06-07)
+
+
+### Bug Fixes
+
+* please-release ([3e815f2](https://github.com/kcirtapfromspace/kcirtap.io/commit/3e815f283a8cc71543532824b873bf3658067a79))
+
 ## 0.2.16 (2024-02-15)
 
 ## What's Changed
