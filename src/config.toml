@@ -1,12 +1,12 @@
 baseURL = "http://kcirtap.io/"
-languageCode = "en"
 title = "escapades in engineering"
 theme = ["github.com/dillonzq/LoveIt"]
 sectionPagesMenu = "main"
 
 # language code ["en", "zh-CN", "fr", "pl", ...]
-languageName = "English"
 defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = true
+
 # whether to include Chinese/Japanese/Korean
 hasCJKLanguage = false
 
@@ -509,13 +509,15 @@ order = [".jpg$", ".gif$"]
   taxonomy = ["HTML", "RSS"]
 
 # Multilingual
-# [languages]
-#   [languages.en]
-#     weight = 1
-#     languageCode = "en"
-#     languageName = "English"
-#     hasCJKLanguage = false
-#     copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License."
+ [languages]
+   [languages.en]
+     weight = 1
+     disabled = false
+     languageCode = "en-US"
+     languageDirection = 'ltr'
+     languageName = "English"
+     hasCJKLanguage = false
+     copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License."
 #     [languages.en.menu]
 #       [[languages.en.menu.main]]
 #         weight = 1
