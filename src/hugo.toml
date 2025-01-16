@@ -1,6 +1,6 @@
 baseURL = "http://kcirtap.io/"
 title = "escapades in engineering"
-theme = ["github.com/dillonzq/LoveIt"]
+theme = ["github.com/kcirtapfromspace/hugo-theme-LoveIt"]
 sectionPagesMenu = "main"
 
 # default amount of posts in each pages
