@@ -3,9 +3,6 @@ title = "escapades in engineering"
 theme = ["github.com/dillonzq/LoveIt"]
 sectionPagesMenu = "main"
 
-# whether to include Chinese/Japanese/Korean
-hasCJKLanguage = false
-
 # default amount of posts in each pages
 [pagination]
   pagerSize = 12

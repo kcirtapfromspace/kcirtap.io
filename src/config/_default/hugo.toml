@@ -3,15 +3,13 @@ defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = true
 
 # Multilingual
- [languages]
-   [languages.en]
-     weight = 1
-     disabled = false
-     languageCode = "en-US"
-     languageDirection = 'ltr'
-     languageName = "English"
-     hasCJKLanguage = false
-     copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License."
+[languages]
+    [languages.en]
+        weight = 1
+        disabled = false
+        languageCode = "en-US"
+        languageDirection = 'ltr'
+        languageName = "English"
 #     [languages.en.menu]
 #       [[languages.en.menu.main]]
 #         weight = 1
