@@ -1,14 +1,7 @@
 baseURL = "http://kcirtap.io/"
-languageCode = "en"
 title = "escapades in engineering"
 theme = ["github.com/dillonzq/LoveIt"]
 sectionPagesMenu = "main"
-
-# language code ["en", "zh-CN", "fr", "pl", ...]
-languageName = "English"
-defaultContentLanguage = "en"
-# whether to include Chinese/Japanese/Korean
-hasCJKLanguage = false
 
 # default amount of posts in each pages
 paginate = 12
@@ -507,101 +500,3 @@ order = [".jpg$", ".gif$"]
   page = ["HTML", "MarkDown"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
-
-# Multilingual
-# [languages]
-#   [languages.en]
-#     weight = 1
-#     languageCode = "en"
-#     languageName = "English"
-#     hasCJKLanguage = false
-#     copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License."
-#     [languages.en.menu]
-#       [[languages.en.menu.main]]
-#         weight = 1
-#         identifier = "archives"
-#         pre = ""
-#         post = ""
-#         name = "Archives"
-#         url = "/archives/"
-#         title = ""
-#       [[languages.en.menu.main]]
-#         weight = 2
-#         identifier = "tags"
-#         pre = ""
-#         post = ""
-#         name = "Tags"
-#         url = "/tags/"
-#         title = ""
-#       [[languages.en.menu.main]]
-#         weight = 3
-#         identifier = "categories"
-#         pre = ""
-#         post = ""
-#         name = "Categories"
-#         url = "/categories/"
-#         title = ""
-#       [[languages.en.menu.main]]
-#         weight = 4
-#         identifier = "about"
-#         pre = ""
-#         post = ""
-#         name = "About"
-#         url = "/about/"
-#         title = ""
-#       [[languages.en.menu.main]]
-#         weight = 5
-#         identifier = "github"
-#         pre = "<i class='fab fa-github fa-fw' aria-hidden='true'></i>"
-#         post = ""
-#         name = ""
-#         url = "https://github.com/kcirtapfromspace/kcirtap.io"
-#         title = "GitHub"
-#     [languages.en.params]
-#       [languages.en.params.search]
-#         enable = true
-#         type = "algolia"
-#         contentLength = 4000
-#         placeholder = ""
-#         maxResultLength = 10
-#         snippetLength = 30
-#         highlightTag = "em"
-#         absoluteURL = false
-#         [languages.en.params.search.algolia]
-#           index = ""
-#           appID = ""
-#           searchKey = ""
-#       [languages.en.params.home]
-#         rss = 10
-#         [languages.en.params.home.profile]
-#           enable = true
-#           # Gravatar Email for preferred avatar in home page
-#           gravatarEmail = ""
-#           # URL of avatar shown in home page
-#           avatarURL = "/images/avatar.png"
-#           #  title shown in home page (HTML format is supported)
-#           title = "eventually correct with Patrick Deutsch"
-#           # subtitle shown in home page (HTML format is supported)
-#           subtitle = "One guys blog and technical notes with hopes to remember how I did that thing with the thing."
-#           # whether to use typeit animation for subtitle
-#           typeit = true
-#           # whether to show social links
-#           social = true
-#           #  disclaimer (HTML format is supported)
-#           disclaimer = "Hopefully, just like with eventual consistency, this site will eventually be consistent."
-#       [languages.en.params.social]
-#         GitHub = "kcirtapfromspace"
-#         Linkedin = "patrickdeutsch"
-#         Twitter = "leypatrey"
-#         Keybase = "kcirtapfromspace"
-#         Spotify = "1240093218"
-#         Kofi= "kcirtapfromspace"
-#         Email = "patrickdeutsch@gmail.com"
-#         RSS = true # 
-#       [languages.en.params.social.Mastodon]
-#         id = "@kcirtapfromspace"
-#         prefix = "https://data-folks.masto.host"
-#       [languages.en.params.social.KoFi]
-#         id = "kcirtapfromspace"
-#         prefix = "https://ko-fi.com"
-
