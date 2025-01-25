@@ -110,12 +110,12 @@ jobs:
       sudo mv hugo /usr/local/bin/hugo
       hugo version
 
-  # Remove or comment out the peaceiris/actions-hugo step
-  # - name: Setup Hugo
-  #   uses: peaceiris/actions-hugo@v2
-  #   with:
-  #     hugo-version: 'latest'
-  #     extended: true
+      # Remove or comment out the peaceiris/actions-hugo step
+      # - name: Setup Hugo
+      #   uses: peaceiris/actions-hugo@v2
+      #   with:
+      #     hugo-version: 'latest'
+      #     extended: true
 
     - name: Hugo Config
       if: needs.check-for-deploy.outputs.deploy == 'true'
