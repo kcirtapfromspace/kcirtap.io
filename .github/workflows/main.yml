@@ -101,11 +101,21 @@ jobs:
         role-session-name: ${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.job }} 
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: Setup Hugo
-      uses: peaceiris/actions-hugo@v2
-      with:
-        hugo-version: 'latest'
-        extended: true
+    - name: Install Hugo with Deploy
+      run: |
+        HUGO_VERSION="v0.142.0"
+        HUGO_FILENAME="hugo_extended_withdeploy_0.142.0_linux-amd64.tar.gz"
+        wget "https://github.com/gohugoio/hugo/releases/download/${HUGO_VERSION}/${HUGO_FILENAME}"
+        tar -xzf ${HUGO_FILENAME}
+        sudo mv hugo /usr/local/bin/hugo
+        hugo version
+
+      # Remove or comment out the peaceiris/actions-hugo step
+      # - name: Setup Hugo
+      #   uses: peaceiris/actions-hugo@v2
+      #   with:
+      #     hugo-version: 'latest'
+      #     extended: true
 
     - name: Hugo Config
       if: needs.check-for-deploy.outputs.deploy == 'true'

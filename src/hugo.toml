@@ -1,10 +1,11 @@
 baseURL = "http://kcirtap.io/"
 title = "escapades in engineering"
-theme = ["github.com/dillonzq/LoveIt"]
+theme = ["github.com/kcirtapfromspace/hugo-theme-LoveIt"]
 sectionPagesMenu = "main"
 
 # default amount of posts in each pages
-paginate = 12
+[pagination]
+  pagerSize = 12
 # google analytics code [UA-XXXXXXXX-X]
 # copyright description used only for seo schema
 copyright = ""
@@ -18,12 +19,6 @@ enableEmoji = true
 
 # ignore some build errors
 ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
-
-# Author config
-[author]
-  name = "Patrick Deutsch"
-  email = "patrickdeutsch@gmail.com"
-  link = "/about/"
 
 # Deployments config
 [deployment]
@@ -114,7 +109,12 @@ order = [".jpg$", ".gif$"]
   description = "This is my cool site"
   # website images for Open Graph and Twitter Cards
   images = ["/images/avatar.png"]
-
+  
+  [params.author]
+  # Author config
+    name = "Patrick Deutsch"
+    email = "patrickdeutsch@gmail.com"
+    link = "/about/"
   # Header config
   [params.header]
     # desktop header mode ["fixed", "normal", "auto"]
