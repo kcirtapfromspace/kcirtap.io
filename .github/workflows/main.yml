@@ -102,7 +102,7 @@ jobs:
         aws-region: ${{ env.AWS_REGION }}
 
     - name: Setup Hugo
-      uses: peaceiris/actions-hugo@v2
+      uses: peaceiris/actions-hugo@v3
       with:
         hugo-version: 'latest'
         extended: true
